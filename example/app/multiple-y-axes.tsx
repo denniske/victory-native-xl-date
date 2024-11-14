@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { CartesianChart, Line, Bar, Area } from "victory-native";
 import inter from "../assets/inter-medium.ttf";
-import { appColors } from "./consts/colors";
+import { appColors } from "../consts/colors";
 import { InputSlider } from "../components/InputSlider";
 
 const randomNumber = () => Math.floor(Math.random() * (50 - 25 + 1)) + 25;
