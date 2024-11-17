@@ -263,16 +263,22 @@ export const transformInputData = <
   const ix = data.map((datum) => datum[xKey]) as InputFields<RawData>[XK][];
   const ixNum = ix.map((val, i) => (isNumericalData ? (val as number) : i));
 
+  console.log('ix', ix);
+  console.log('ixNum', ixNum);
+
+  console.log('isNumericalData', isNumericalData);
+
   // Generate our x-scale
   // If user provides a domain, use that as our min / max
   // Else if, tickValues are provided, we use that instead
   // Else, we find min / max of y values across all yKeys, and use that for y range instead.
-  const ixMin = asNumber(domain?.x?.[0] ?? tickDomainsX?.[0] ?? ixNum.at(0)),
-    ixMax = asNumber(domain?.x?.[1] ?? tickDomainsX?.[1] ?? ixNum.at(-1));
+  const ixMin = domain?.x?.[0] ?? tickDomainsX?.[0] ?? ix.at(0),
+    ixMax = domain?.x?.[1] ?? tickDomainsX?.[1] ?? ix.at(-1);
 
   const xScale = makeScale({
     // if single data point, manually add upper & lower bounds so chart renders properly
-    inputBounds: ixMin === ixMax ? [ixMin - 1, ixMax + 1] : [ixMin, ixMax],
+    // inputBounds: ixMin === ixMax ? [ixMin - 1, ixMax + 1] : [ixMin, ixMax],
+    inputBounds: ixMin === ixMax ? [ixMin, ixMax] as any : [ixMin, ixMax], // to fix type error
     outputBounds: oRange,
     padStart:
       typeof domainPadding === "number" ? domainPadding : domainPadding?.left,
@@ -280,13 +286,19 @@ export const transformInputData = <
       typeof domainPadding === "number" ? domainPadding : domainPadding?.right,
   });
 
+  console.log('xScale', xScale);
+
   // Normalize xTicks values either via the d3 scaleLinear ticks() function or our custom downSample function
   // For consistency we do it here, so we have both y and x ticks to pass to the axis generator
   const xTicksNormalized = xTickValues
     ? downsampleTicks(xTickValues, xTicks)
     : xScale.ticks(xTicks);
 
-  const ox = ixNum.map((x) => xScale(x)!);
+  console.log('xTicksNormalized', xTicksNormalized);
+
+  const ox = ix.map((x) => xScale(x as any)!);
+
+  console.log('ox', ox);
 
   return {
     ix,

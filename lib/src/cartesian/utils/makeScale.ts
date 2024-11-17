@@ -1,4 +1,4 @@
-import { type ScaleLinear, scaleLinear } from "d3-scale";
+import { type ScaleLinear, scaleLinear, scaleTime } from "d3-scale";
 
 export const makeScale = ({
   inputBounds,
@@ -13,8 +13,33 @@ export const makeScale = ({
   padEnd?: number;
   isNice?: boolean;
 }): ScaleLinear<number, number> => {
-  // Linear
-  const scale = scaleLinear().domain(inputBounds).range(outputBounds);
+
+  console.log('makeScale', inputBounds,
+    outputBounds,
+    padStart,
+    padEnd,
+    isNice);
+
+
+  if (typeof inputBounds.at(0) === "number") {
+    const scale = scaleLinear().domain(inputBounds).range(outputBounds);
+
+    // scale
+
+    if (padStart || padEnd) {
+      scale
+        .domain([
+          scale.invert(outputBounds[0] - (padStart ?? 0)),
+          scale.invert(outputBounds[1] + (padEnd ?? 0)),
+        ])
+        .range(outputBounds);
+    }
+
+    if (isNice) scale.nice();
+    return scale;
+  }
+
+  const scale = scaleTime().domain(inputBounds).range(outputBounds);
 
   if (padStart || padEnd) {
     scale
@@ -26,5 +51,5 @@ export const makeScale = ({
   }
 
   if (isNice) scale.nice();
-  return scale;
+  return scale as any;
 };

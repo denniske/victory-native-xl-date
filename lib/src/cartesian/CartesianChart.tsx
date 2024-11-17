@@ -145,6 +145,8 @@ export function CartesianChart<
       bottom: primaryYScale(primaryYScale.domain().at(-1) || 0),
     };
 
+    // console.log('chartBounds', chartBounds);
+
     return {
       xTicksNormalized,
       yAxes,
@@ -168,6 +170,8 @@ export function CartesianChart<
   React.useEffect(() => {
     tData.value = _tData;
   }, [_tData, tData]);
+
+  console.log('tData', tData);
 
   const primaryYAxis = yAxes[0];
   const primaryYScale = primaryYAxis.yScale;
@@ -387,6 +391,8 @@ export function CartesianChart<
       {},
       {
         get(_, property: string): PointsArg[keyof PointsArg] | undefined {
+
+
           const key = property as YK;
           if (!yKeys.includes(key)) return undefined;
           if (cache[key]) return cache[key];
@@ -397,6 +403,8 @@ export function CartesianChart<
             y: _tData.y[key].o[i],
             yValue: _tData.y[key].i[i],
           }));
+
+          console.log('==> property RAW', property, cache[key]);
 
           return cache[key];
         },

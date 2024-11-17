@@ -28,11 +28,19 @@ import { descriptionForRoute } from "../consts/routes";
 
 const randomNumber = () => Math.floor(Math.random() * (50 - 25 + 1)) + 25;
 
-const DATA = (numberPoints = 13) =>
-  Array.from({ length: numberPoints }, (_, index) => ({
-    day: index + 1,
-    sales: randomNumber(),
-  }));
+// const DATA = (numberPoints = 13) =>
+//   Array.from({ length: numberPoints }, (_, index) => ({
+//     day: index + 1,
+//     sales: randomNumber(),
+//   }));
+
+const DATA = (numberPoints = 13) => [
+  { day: new Date(2023, 11, 1), sales: 10, y1: 5 },
+  { day: new Date(2024, 5, 1), sales: 15, y1: 5 },
+  { day: new Date(2024, 5, 2), sales: 20, y1: 10 },
+  { day: new Date(2024, 5, 3), sales: 20, y1: 15 },
+  { day: new Date(2024, 12, 1), sales: 30, y1: 25 }
+];
 
 export default function LineChartPage(props: { segment: string }) {
   const description = descriptionForRoute(props.segment);
@@ -102,7 +110,14 @@ export default function LineChartPage(props: { segment: string }) {
               y: yAxisLabelPosition,
             },
             formatXLabel: (value) => {
-              return customXLabel ? `${value} ${customXLabel}` : `${value}`;
+
+              console.log('formatXLabel', value);
+              if (value instanceof Date) {
+                return value.toLocaleDateString();
+              }
+
+              return '1';
+              // return (value as Date)?.getMonth().toString(); // customXLabel ? `${value} ${customXLabel}` : `${value}`;
             },
             formatYLabel: (value) => {
               return customYLabel ? `${value} ${customYLabel}` : `${value}`;

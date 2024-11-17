@@ -38,8 +38,14 @@ export const XAxis = <
     ? downsampleTicks(tickValues, tickCount)
     : xScale.ticks(tickCount);
 
+  console.log('xTicksNormalized', xTicksNormalized);
+  console.log('ix', ix);
+
   const xAxisNodes = xTicksNormalized.map((tick) => {
-    const val = isNumericalData ? tick : ix[tick];
+    const val = isNumericalData || typeof tick === 'object' ? tick : ix[tick];
+
+    console.log('AXIS NODE tick', tick);
+    console.log('AXIS NODE val', val);
 
     const contentX = formatXLabel(val as never);
     const labelWidth =

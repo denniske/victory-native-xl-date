@@ -1,5 +1,21 @@
 # victory-native
 
+## 42.0.0
+
+### Major Changes
+
+- date support
+
+## 41.10.0
+
+### Minor Changes
+
+- Add stacked area charts ([#387](https://github.com/FormidableLabs/victory-native-xl/pull/387))
+
+### Patch Changes
+
+- Fix warnings associated with newer versions of Reanimated ([#423](https://github.com/FormidableLabs/victory-native-xl/pull/423))
+
 ## 41.9.0
 
 ### Minor Changes
